@@ -57,7 +57,7 @@ class course_non_participation_model extends reminder_notification_model impleme
             INNER JOIN {role_assignments} ra ON ra.userid = u.id
             INNER JOIN {context} ctx ON ctx.id = ra.contextid AND ctx.instanceid = c.id
             WHERE u.id NOT IN (SELECT la.userid FROM {user_lastaccess} la WHERE la.courseid = c.id AND la.timeaccess > ?)
-            AND ra.roleid IN (SELECT cast(value as int) FROM {config} WHERE name = 'gradebookroles')
+            AND ra.roleid IN (SELECT CAST(value AS INTEGER) FROM {config} WHERE name = 'gradebookroles')
             AND c.id = ?
             GROUP BY u.id", [$this->condition->get_offset_timestamp_from_now('before'), $this->get_course_id()]);
 
