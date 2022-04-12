@@ -280,7 +280,7 @@ class block_quickmail_message_form_validator_testcase extends advanced_testcase 
         $this->update_system_config_value('block_quickmail_message_types_available', 'email');
 
         // Get a compose form submission.
-        $composeformdata = $this->get_compose_message_form_submission($userstudents, 'message');
+        $composeformdata = $this->get_compose_message_form_submission($userstudents, 'invalid message');
 
         $validator = new message_form_validator($composeformdata);
         $validator->for_course($course);
