@@ -19,31 +19,37 @@
  * @copyright  2008 onwards Louisiana State University
  * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author     Update by David Lowe
  */
 
-defined('MOODLE_INTERNAL') || die();
+class sent_messages_ctrl {
+    public function remove_sent_messages($data) {
+        global $USER;
+        // Authentication.
+        require_login();
 
-require_once(dirname(__FILE__) . '/traits/unit_testcase_traits.php');
+        $success = "success";
+        $failmsg = "The messages have been successfully removed";
+        foreach ($data->ids as $id) {
 
-use block_quickmail\notifier\event_notification_handler;
+            // Check that the message has not been deleted.
+            if (!$message = \block_quickmail\persistents\message::find_or_null($id)) {
+                $success = "error";
+                $failmsg = "Cannot find this sent message";
+            }
 
-class block_quickmail_event_notification_handler_testcase extends advanced_testcase {
+            // Check that the user can delete this message.
+            if ($message->get('user_id') !== $USER->id) {
+                $success = "error";
+                $failmsg = "This user cannot delete the sent message(s)";
+            }
 
-    use has_general_helpers,
-        sets_up_courses,
-        sets_up_notifications;
+            $message->mark_as_deleted();
+        }
 
-    public function test_handles_course_entered_events() {
-        // Reset all changes automatically after this test.
-        $this->resetAfterTest(true);
-
-        // Set up a course with a teacher and students.
-        list($course, $userteacher, $userstudents) = $this->setup_course_with_teacher_and_students();
-
-        $notif = $this->create_event_notification_for_course_user('course-entered', $course, $userstudents[0], null, [
-            'is_enabled' => 1
-        ]);
-
-        event_notification_handler::course_entered($userstudents[0]->id, $course->id);
+        return array(
+            'success' => $success,
+            'msg' => $failmsg
+        );
     }
 }
