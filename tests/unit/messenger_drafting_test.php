@@ -14,12 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * @package    block_quickmail
- * @copyright  2008 onwards Louisiana State University
- * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+namespace block_quickmail;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -27,17 +22,22 @@ require_once(dirname(__FILE__) . '/traits/unit_testcase_traits.php');
 
 use block_quickmail\messenger\messenger;
 use block_quickmail\persistents\message;
-use block_quickmail\persistents\signature;
 use block_quickmail\exceptions\validation_exception;
 
-class messenger_drafting_test extends advanced_testcase {
+/**
+ * @package    block_quickmail
+ * @copyright  2008 onwards Louisiana State University
+ * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class messenger_drafting_test extends \advanced_testcase {
 
-    use has_general_helpers,
-        sets_up_courses,
-        submits_compose_message_form,
-        sends_emails,
-        sends_messages,
-        assigns_mentors;
+    use \has_general_helpers,
+        \sets_up_courses,
+        \submits_compose_message_form,
+        \sends_emails,
+        \sends_messages,
+        \assigns_mentors;
 
     public function test_messenger_saves_draft_email() {
         // Reset all changes automatically after this test.
