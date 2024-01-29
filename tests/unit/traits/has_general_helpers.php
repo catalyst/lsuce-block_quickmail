@@ -84,10 +84,6 @@ trait has_general_helpers {
         return $params;
     }
 
-    public function update_system_config_value($configname, $newvalue) {
-        set_config($configname, $newvalue);
-    }
-
     public function override_params($values, $overrides) {
         foreach (array_keys($values) as $key) {
             if (array_key_exists($key, $overrides)) {
