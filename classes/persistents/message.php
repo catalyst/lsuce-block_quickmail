@@ -736,7 +736,7 @@ class message extends \block_quickmail\persistents\persistent {
             'no_reply' => $notification->get('no_reply'),
             'send_to_mentors' => $notification->get('send_to_mentors'),
             'is_draft' => 0,
-            'excluded' => $data->excluded
+            'excluded' => null
         ]);
 
         $message->sync_recipients($recipientuserids);
