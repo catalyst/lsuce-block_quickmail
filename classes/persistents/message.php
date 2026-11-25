@@ -328,6 +328,7 @@ class message extends \block_quickmail\persistents\persistent {
                 $recipients = $this->get_message_recipients_all();
                 return $recipients;
             }
+            $recipients = message_recipient::get_records(['message_id' => $messageid, 'sent_at' => 0]);
 
             // Sent.
         } else {
@@ -695,7 +696,7 @@ class message extends \block_quickmail\persistents\persistent {
             'no_reply' => $data->no_reply,
             'send_to_mentors' => $data->mentor_copy,
             'is_draft' => (int) $isdraft,
-            'excluded' => $data->excluded
+            'excluded' => $data->excluded ?? null,
         ]);
 
         return $message;
@@ -735,7 +736,7 @@ class message extends \block_quickmail\persistents\persistent {
             'no_reply' => $notification->get('no_reply'),
             'send_to_mentors' => $notification->get('send_to_mentors'),
             'is_draft' => 0,
-            'excluded' => $data->excluded
+            'excluded' => null
         ]);
 
         $message->sync_recipients($recipientuserids);
@@ -765,7 +766,7 @@ class message extends \block_quickmail\persistents\persistent {
         $this->set('no_reply', $data->no_reply);
         $this->set('send_to_mentors', $data->mentor_copy);
         $this->set('is_draft', (bool) $isdraft);
-        $this->set('excluded', $data->excluded);
+        $this->set('excluded', $data->excluded ?? null);
 
         $this->update();
 
